@@ -1,0 +1,34 @@
+Exercícios de memorização
+
+Qual é a alternativa correta?
+Retorna uma String sem receber parâmetros:
+a)Supplier
+b)Consumer<String>
+c)Predicate<String>
+d)Supplier<String>
+
+Retorna um Boolean e recebe uma String:
+a)Predicate<String>
+b)Function<String, Boolean>
+c)Function<Boolean, String>
+d)Predicate
+
+Retorna um Integer e recebe dois Integers
+a)Function<Integer, Integer>
+b)BiFunction<Integer, Integer, Integer>
+c)BinaryOperator<Integer>
+d)UnaryOperator<Integer>
+
+Preencha a lacuna corretamente:
+__<List> ex1 = x -> "".equals(x.get(0));
+
+__<Long> ex2 = (Long l) -> System.out.println(l);
+
+__<String, String> ex3 = (s1, s2) -> false;
+
+Encontre o erro:
+Function<List<String>> ex1 = x -> x.get(0);
+
+UnaryOperator<Long> ex2 = (Long l) -> 3.14;
+
+Predicate ex4 = String::isEmpty;
