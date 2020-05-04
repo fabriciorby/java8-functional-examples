@@ -5,29 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.IntStream;
 
+import static example.Helper.getListaDeUsuarios;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.nullsLast;
-import static java.util.stream.Collectors.toList;
 
 class ListTest {
-
-    //Antes explicar method references
-    private Usuario criaUsuario(Integer i) {
-        List<String> nomes = Arrays.asList("Hugo", "Fabricio", "Vinicius", "Victor", "Ariella");
-        List<String> sobrenomes = Arrays.asList("Ogawa", "Yamamoto", "Fonseca", "Hideki", "Yamada");
-        List<String> cpfs = Arrays.asList("12341243", "3245124", "54323245", "1235436", "324324");
-        List<Integer> idade = Arrays.asList(25, 52, 25, 50, 30);
-        return new Usuario(nomes.get(i), sobrenomes.get(i), cpfs.get(i), idade.get(i), i);
-    }
-
-    public List<Usuario> getListaDeUsuarios() {
-        return IntStream.range(0, 5)
-                .parallel()
-                .mapToObj(this::criaUsuario)
-                .collect(toList());
-    }
 
     List<Usuario> usuarios = getListaDeUsuarios();
 
@@ -41,7 +24,7 @@ class ListTest {
 
         //Utilizando iterator (feio)
         Iterator<Usuario> iterator = usuarios.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
 
@@ -106,7 +89,7 @@ class ListTest {
         usuarios.sort(new Comparator() {
             @Override
             public int compare(Object u1, Object u2) {
-                return ((Usuario) u1).getNome().compareToIgnoreCase(((Usuario)u2).getNome());
+                return ((Usuario) u1).getNome().compareToIgnoreCase(((Usuario) u2).getNome());
             }
         });
         //É possível criar um método para forçarmos a utilização do method reference e deixar o código mais limpo
@@ -141,7 +124,7 @@ class ListTest {
     public void modificaTodosElementos() {
         //Aplicar uma função em todos os elementos de uma lista
         List<Integer> listaDeNumeros = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-        listaDeNumeros.replaceAll(x -> x*10);
+        listaDeNumeros.replaceAll(x -> x * 10);
         listaDeNumeros.forEach(System.out::println);
         System.out.println();
 

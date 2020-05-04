@@ -1,13 +1,18 @@
 package example;
 
+import example.pojo.Usuario;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.*;
+
+import static example.Helper.getListaDeUsuarios;
+import static java.util.stream.Collectors.*;
 
 public class StreamTest {
     @Test
@@ -217,7 +222,71 @@ public class StreamTest {
 
     @Test
     public void collectTest() {
+        //O operador mais importante e complicado, na minha opinião.
 
+        Supplier<Stream<String>> stringStream = () -> Stream.of("Pikachu", "Squirtle", "Charmander");
+
+        //Criar strings
+        System.out.println(stringStream.get().collect(Collectors.joining(", ")));
+
+        //Encontrar a média de alguma coisa
+        System.out.println(stringStream.get().collect(Collectors.averagingInt(String::length)));
+
+
+        //Collect simples com objetos
+        System.out.println(getListaDeUsuarios().stream()
+                .map(Usuario::getNome)
+                .collect(Collectors.joining(", ", "Nomes: ", ".")));
+
+        System.out.println("Média de idade: " +
+                getListaDeUsuarios().stream()
+                        .peek((usuario) -> System.out.println(usuario.getIdade()))
+                        .collect(Collectors.averagingDouble(Usuario::getIdade)));
+
+        //Collect com Maps (aqui começa a ficar útil! e complicado...)
+        Map<String, Integer> m1 = getListaDeUsuarios().stream()
+                .collect(Collectors.toMap(Usuario::getNome, Usuario::getIdade));
+        System.out.println(m1);
+
+        //Porém, e se eu quisesse que a idade fosse a chave?
+        try {
+            Map<Integer, String> m2 = getListaDeUsuarios().stream()
+                    .collect(toMap(Usuario::getIdade, Usuario::getNome));
+        } catch (IllegalStateException e) {
+            System.out.println(e);
+        }
+
+        //Essa Exception é lançada pois temos duas pessoas com a mesma idade, e não podemos ter chaves duplicadas.
+        //Portanto, o que fazer? Adicionar um lambda a ser executado caso isso ocorra!
+        Map<Integer, String> m2 = getListaDeUsuarios().stream()
+                .collect(toMap(Usuario::getIdade, Usuario::getNome, (u1, u2) -> "(" + u1 + ", " + u2 + ")"));
+        System.out.println(m2);
+
+        //Porém, no nosso caso, há formas melhores de fazer isso.
+        //E se ao invés de concatenarmos uma String, salvássemos em uma List?
+        Map<Integer, List<String>> m3 = getListaDeUsuarios().stream()
+                .collect(groupingBy(Usuario::getIdade, mapping(Usuario::getNome, toList())));
+        System.out.println(m3);
+
+        //E se eu quisesse o objeto Usuario ao invés do nome?
+        Map<Integer, List<Usuario>> m4 = getListaDeUsuarios().stream()
+                .collect(groupingBy(Usuario::getIdade));
+        System.out.println(m4);
+
+        //Pela primeira letra do nome?
+        Map<Character, List<String>> m5 = getListaDeUsuarios().stream()
+                .collect(groupingBy(u -> u.getNome().charAt(0), mapping(Usuario::getNome, toList())));
+        System.out.println(m5);
+
+        //E se eu quiser criar um map dividido em pessoas com mais de 25 anos?
+        Map<Boolean, List<String>> m6 = getListaDeUsuarios().stream()
+                .collect(partitioningBy(u -> u.getIdade() > 25, mapping(Usuario::getNome, toList())));
+        System.out.println(m6);
+
+        //E se eu quiser contar a quantidade de pessoas que atendem essa condição?
+        Map<Boolean, Long> m7 = getListaDeUsuarios().stream()
+                .collect(partitioningBy(u -> u.getIdade() > 25, counting()));
+        System.out.println(m7);
 
     }
 
