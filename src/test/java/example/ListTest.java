@@ -33,7 +33,7 @@ class ListTest {
             System.out.println(usuario);
         }
 
-        //Utilizando streams (maravilhoso)
+        //Utilizando lambda/method reference (maravilhoso)
         usuarios.forEach(System.out::println);
 
         //É possível salvar o sysout em uma variável Consumer
