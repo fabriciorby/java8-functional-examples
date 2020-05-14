@@ -15,19 +15,19 @@ public class FunctionalTest {
     @Test
     public void lambdaSyntax() {
         //Exemplo de lambda com apenas uma linha
-        Function<Integer, Integer> f0 = i -> i++;
+        Function<Integer, Integer> f0 = i -> i + 1;
 
         //Exemplo de lambda com bloco de código
         Function<Integer, Integer> f1 =
                 i -> {
-                    i = i++;
+                    i = i + 1;
                     return i / 2;
                 };
 
         //Exemplo de código com descrição da variável do lambda
         Function<Integer, Integer> f2 =
                 (Integer i) -> {
-                    i = i++;
+                    i = i + 1;
                     return i / 2;
                 };
     }
